@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h2>Available Times for {{ request.user | title }}</h2>
+
+    {% if availabletime_list %}
+    <ul>
+        {% for inst in availabletime_list %}
+        <li>{{ inst }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>You have no available times.</p>
+    {% endif %}
+
+{% endblock %}
