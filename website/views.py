@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import AvailableTime, User, ScheduleHubGroup
+from .models import AvailableTime, ScheduleHubGroup
 from django.contrib.auth import authenticate, login, logout
 from .forms import registerForm
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
@@ -16,17 +15,15 @@ def index(request):
 
 class AvailabilityListView(LoginRequiredMixin, generic.ListView):
     """
-    View for user adding availability
-    """
-    """
-    okay, what do I need?
-    I need to be able to add time 
+    View for showing user availability
+    Requires auth
     """
     model =  AvailableTime
     template_name = 'available_time.html'
     paginate_by = 10
 
     def get_queryset(self):
+        # get all instances that relate to the user who made the request
         return AvailableTime.objects.filter(user=self.request.user)
 
 
@@ -40,16 +37,14 @@ def registerUser(request):
         # if good, set up user form and get data
         form = registerForm(request.POST)
         if form.is_valid():
-            form.save()
-            userName = form.cleaned_data.get('username')
-            userPassword = form.cleaned_data.get('password')
-            user = authenticate(username=userName, password=userPassword)
+            user = form.save()
             login(request,user)
-            return render(redirect(AvailabilityListView))
+            return redirect('my-time')
+        else:
+            return render(request, 'register.html', {'form': registerForm()})
     else:
         # else, set up user form and try again
-        form = registerForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'register.html', {'form': registerForm()})
 
 
 def loginUser(request):

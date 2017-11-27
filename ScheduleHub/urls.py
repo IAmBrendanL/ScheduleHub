@@ -19,10 +19,12 @@ from django.views.generic import RedirectView # redirect view to website
 from django.conf.urls import include          # include website urls
 from django.conf import settings              # serve static files
 from django.conf.urls.static import static    # serve static files
+import django.contrib.auth.urls               # enable account creation urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^website/', include('website.urls')),
     url(r'^$', RedirectView.as_view(url='/website/', permanent=True)),
+    url(r'^accounts/', include(django.contrib.auth.urls))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

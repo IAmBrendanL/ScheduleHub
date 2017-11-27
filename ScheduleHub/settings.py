@@ -55,7 +55,7 @@ ROOT_URLCONF = 'ScheduleHub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),'./templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,3 +123,6 @@ STATIC_URL = '/static/'
 
 # set user models
 AUTH_USER_MODEL = 'website.User'
+
+# set redirect for login
+LOGIN_REDIRECT_URL = '/'
