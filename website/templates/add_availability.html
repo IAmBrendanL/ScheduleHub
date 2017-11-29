@@ -4,6 +4,8 @@
 <h2>Add Availability</h2>
  <form method="post">
      {% csrf_token %}
+     {{ form.errors }}
+     {{ form.non_field_errors }}
      {{ form.as_p}}
      <button type="submit">Add interval</button>
  </form>

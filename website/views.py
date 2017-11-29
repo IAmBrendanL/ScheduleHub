@@ -5,6 +5,7 @@ from .forms import registerForm, getStartAndEndDatesForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views import generic
+import datetime
 
 # Create your views here.
 
@@ -37,11 +38,20 @@ def getAvailableTime(request):
     if request.method == 'POST':
         form = getStartAndEndDatesForm(request.POST)
         if form.is_valid():
-            start = form.cleaned_data.get('startTime')
-            end = form.cleaned_data.get('endTime')
-            AvailableTime.objects.create(startTime=start, endTime=end, user=request.user)
-            return redirect(AvailabilityListView.as_view())
+            data = form.cleaned_data
+            # get date time
+            startTime =  datetime.datetime.strptime(data['start_time'], '%I:%M %p').time()
+            endTime =  datetime.datetime.strptime(data['end_time'], '%I:%M %p').time()
+            startDateTime = datetime.datetime.combine(data['start_date'],startTime)
+            endDateTime = datetime.datetime.combine(data['end_date'],endTime)
+            # check valid date time and return appropriate page
+            if startDateTime >= endDateTime:
+                return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
+            else:
+                AvailableTime.objects.create(startTime=startDateTime, endTime=endDateTime, user=request.user)
+                return redirect('/website/my-time/')
         else:
+            print('form was not valid')
             return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
     else:
         return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
