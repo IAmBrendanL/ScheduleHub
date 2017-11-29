@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import AvailableTime, ScheduleHubGroup
 from django.contrib.auth import authenticate, login, logout
-from .forms import registerForm
+from .forms import registerForm, getStartAndEndDatesForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views import generic
 
 # Create your views here.
@@ -22,11 +23,28 @@ class AvailabilityListView(LoginRequiredMixin, generic.ListView):
     template_name = 'available_time.html'
     paginate_by = 10
 
+    # methods
     def get_queryset(self):
         # get all instances that relate to the user who made the request
         return AvailableTime.objects.filter(user=self.request.user)
 
 
+@login_required
+def getAvailableTime(request):
+    """
+    Gets available time from form and saves it
+    """
+    if request.method == 'POST':
+        form = getStartAndEndDatesForm(request.POST)
+        if form.is_valid():
+            start = form.cleaned_data.get('startTime')
+            end = form.cleaned_data.get('endTime')
+            AvailableTime.objects.create(startTime=start, endTime=end, user=request.user)
+            return redirect(AvailabilityListView.as_view())
+        else:
+            return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
+    else:
+        return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
 
 
 def registerUser(request):

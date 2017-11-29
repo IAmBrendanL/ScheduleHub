@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Available Times for {{ request.user | title }}</h2>
-
+    <a href="{% url 'add-time' %}">Add Availability</a>
     {% if availabletime_list %}
     <ul>
         {% for inst in availabletime_list %}

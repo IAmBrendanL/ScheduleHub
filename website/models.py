@@ -67,20 +67,3 @@ class ScheduleHubGroup(models.Model):
     def __str__(self):
         return self.name
 
-
-"""
-So I need models
-    - user 
-        - name
-        - many to many: groups that the user belongs to
-        - one to many: available times
-    - group
-        - name
-        - one to many: time available for all # a data cache
-        - many to many: users that are part of the group
-    - time
-        - one to one: user
-        - one to one: group
-        - start time
-        - end time
-"""
