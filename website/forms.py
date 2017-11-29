@@ -10,19 +10,21 @@ class registerForm(UserCreationForm):
     """
     Extends the UCF to add extra fields
     """
+
     class Meta:
         model = User
-        fields = ('username','first_name', 'last_name', 'email', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
 
 class getStartAndEndDatesForm(forms.ModelForm):
     """
     Gets data from the user
     """
-    start_date= forms.DateField(widget=SelectDateWidget, initial=datetime.date.today())
-    start_time= forms.MultipleChoiceField(widget=DateTime)
+    start_date = forms.DateField(widget=SelectDateWidget, initial=datetime.date.today())
+    start_time = forms.MultipleChoiceField(widget=DateTime)
     end_date = forms.DateField(widget=SelectDateWidget, initial=datetime.date.today())
-    end_time= forms.MultipleChoiceField(widget=DateTime)
+    end_time = forms.MultipleChoiceField(widget=DateTime)
 
     class Meta:
         model = AvailableTime
-        fields = ('start_date', 'start_time','end_date', 'end_time')
+        fields = ('start_date', 'start_time', 'end_date', 'end_time')
