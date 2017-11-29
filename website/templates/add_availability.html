@@ -4,8 +4,11 @@
 <h2>Add Availability</h2>
  <form method="post">
      {% csrf_token %}
-     {{ form.errors }}
-     {{ form.non_field_errors }}
+     {% if messages %}
+         {% for message in messages %}
+             <p class="text-danger">{{ message }}</p>
+         {% endfor %}
+     {% endif %}
      {{ form.as_p}}
      <button type="submit">Add interval</button>
  </form>

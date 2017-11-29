@@ -126,3 +126,5 @@ AUTH_USER_MODEL = 'website.User'
 
 # set redirect for login
 LOGIN_REDIRECT_URL = '/'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

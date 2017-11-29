@@ -5,6 +5,7 @@ from .forms import registerForm, getStartAndEndDatesForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views import generic
+from django.contrib import messages
 import datetime
 
 # Create your views here.
@@ -46,7 +47,9 @@ def getAvailableTime(request):
             endDateTime = datetime.datetime.combine(data['end_date'],endTime)
             # check valid date time and return appropriate page
             if startDateTime >= endDateTime:
-                return render(request, 'add_availability.html', {'form': getStartAndEndDatesForm()})
+                # if not valid return same form and set error
+                messages.error(request, "Please enter a interval of time that is greater than 0.")
+                return render(request, 'add_availability.html', {'form':form})
             else:
                 AvailableTime.objects.create(startTime=startDateTime, endTime=endDateTime, user=request.user)
                 return redirect('/website/my-time/')
