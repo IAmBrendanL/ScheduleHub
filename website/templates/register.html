@@ -1,10 +1,15 @@
  {% extends 'base_generic.html' %}
 
- {% block content %}
- <h2>Register</h2>
+{% block pageTitle %}
+    <h2 align="center">Sign up</h2>
+    <p class="text text-muted" align="center">Register for a new account</p>
+    <hr>
+{% endblock %}
+
+{% block content %}
  <form method="post">
      {% csrf_token %}
      {{ form.as_p }}
-     <button type="submit">Register</button>
+     <button class="btn btn-primary" type="submit">Register</button>
  </form>
  {% endblock %}
