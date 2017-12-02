@@ -1,8 +1,14 @@
 {% extends 'base_generic.html' %}
 
+{% block pageTitle %}
+    <h2 align="center">Available Times for {{ request.user | title }}</h2>
+    <hr>
+{% endblock %}
+
 {% block content %}
-    <h2>Available Times for {{ request.user | title }}</h2>
-    <a href="{% url 'add-time' %}">Add Availability</a>
+    <a href="{% url 'add-time' %}" class="btn btn-outline-primary">Add Availability</a>
+    <br>
+    <br>
     {% if availabletime_list %}
     <ul>
         {% for inst in availabletime_list %}

@@ -21,10 +21,12 @@
         <td>{{ form.password.label_tag }}</td>
         <td>{{ form.password }}</td>
     </div>
+        {% if form.errors %}
+        <p><a  class="text text-danger" href="{% url 'password_reset' %}">Forgotten password?</a></p>
+        {% endif %}
     <div>
-        <input type="submit" value="login" />
+        <input class="btn btn-primary" type="submit" value="login" />
         <input type="hidden" name="next" value="{{ next }}" />
     </div>
     </form>
-    <p><a href="{% url 'password_reset' %}">Forgotten password?</a></p>
 {% endblock %}

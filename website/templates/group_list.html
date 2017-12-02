@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block pageTitle %}
+    <h2 align="center">All Groups</h2>
+    <hr>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'add-group' %}" class="btn btn-outline-primary">Add Group</a>
+    <br>
+    <br>
+    {% if schedulehubgroup_list %}
+        <ul>
+            {% for inst in schedulehubgroup_list %}
+                <li><a href="">{{ inst }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no groups</p>
+    {% endif %}
+
+{% endblock %}
