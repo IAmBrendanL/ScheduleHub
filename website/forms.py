@@ -3,7 +3,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.extras.widgets import SelectDateWidget
 from .widget import DateTime
-from .models import User, AvailableTime, ScheduleHubGroup
+from .models import AvailableTime, ScheduleHubGroup
+from django.contrib.auth.models import User
 
 
 class RegisterForm(UserCreationForm):
@@ -53,9 +54,10 @@ def _getUserList():
     """
     lst = []
     i = 0
-    for usr in User.objects.all():
-        lst.append((str(i),str(usr)))
-        i+= 1
+    if User.objects.count() != 0:
+        for usr in User.objects.all():
+            lst.append((str(i), str(usr)))
+            i += 1
     return tuple(lst)
 
 
@@ -63,7 +65,17 @@ class AddGroupForm(forms.Form):
     """
     Form for adding new groups
     """
-    add_members = forms.MultipleChoiceField(widget=forms.SelectMultiple ,choices=_getUserList())
+    userList = []
+
+    def __init__(self, *args, **kwargs):
+        self.userList = _getUserList()
+        self.fields = (
+            forms.MultipleChoiceField(widget=forms.SelectMultiple, choices=self.userList),
+            forms.CharField(max_length=128)
+        )
+        super(AddGroupForm, self).__init__(self.fields, *args, **kwargs)
+
+    add_members = forms.MultipleChoiceField(widget=forms.SelectMultiple, choices= userList)
     name = forms.CharField(max_length=128)
 
 

@@ -121,9 +121,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# set user models
-AUTH_USER_MODEL = 'website.User'
-
 # set redirect for login
 LOGIN_REDIRECT_URL = '/'
 

@@ -1,6 +1,5 @@
 from django.db import models
-from django.urls import reverse # generates urls
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.conf import settings
 
 # Create your models here.
@@ -14,7 +13,7 @@ class AvailableTime(models.Model):
     endTime = models.DateTimeField()
 
     # relationships defined in the user and group models
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     # meta
     class Meta:
@@ -25,25 +24,6 @@ class AvailableTime(models.Model):
         return self.startTime.strftime('%I:%M %p |  %m/%d/%y ') + " to " + self.endTime.strftime('%I:%M %p |  %m/%d/%y ')
 
 
-
-class User(AbstractUser):
-    """
-    A model that represents users
-    """
-    # properties (fields)
-
-    # relationships (the group relationship is defined in the group model)
-
-    # meta
-    # class Meta:
-    #     # order by name
-    #     ordering = ["user.first_name", "user.last_name"]
-
-    # methods
-    # def __str__(self):
-    #     return " {0} {1}".format(self.first_name, self.last_name)
-
-
 class ScheduleHubGroup(models.Model):
     """
     A model that represents a group of users
@@ -52,7 +32,7 @@ class ScheduleHubGroup(models.Model):
     name = models.CharField(max_length=128, help_text="Enter a name")
 
     # relationships
-    times = models.ForeignKey(AvailableTime,on_delete=models.SET_NULL, null=True)
+    times = models.ForeignKey(AvailableTime, on_delete=models.SET_NULL, null=True)
     users = models.ManyToManyField(User)
 
     # meta
