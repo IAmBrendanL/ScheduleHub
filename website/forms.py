@@ -2,9 +2,10 @@ import datetime
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.extras.widgets import SelectDateWidget
-from .widget import DateTime
-from .models import AvailableTime, ScheduleHubGroup
 from django.contrib.auth.models import User
+from django.forms.models import fields_for_model
+from .widget import DateTime
+from .models import AvailableTime, ScheduleHubGroup, group_name_regex_val
 
 
 class RegisterForm(UserCreationForm):
@@ -48,11 +49,14 @@ class GetStartAndEndDatesForm(forms.ModelForm):
         fields = ('start_date', 'start_time', 'end_date', 'end_time')
 
 
-class AddGroupForm(forms.ModelForm):
+class AddGroupForm(forms.Form):
     """
     Form for adding new groups
     """
-    class Meta:
-        model = ScheduleHubGroup
-        fields = ['name', 'users']
+    name = forms.CharField(required=True, validators=[group_name_regex_val])
+    name.widget.attrs['class'] = 'form-control'
+    _model_fields = fields_for_model(ScheduleHubGroup, fields=['users'])
+    users = _model_fields['users']
+    users.widget.attrs['class'] = 'form-control'
+
 

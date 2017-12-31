@@ -13,7 +13,15 @@
                 <p class="text text-danger">{{ message }}</p>
             {% endfor %}
         {% endif %}
-        {{ form.as_p }}
+        {% if form.name.errors %}
+            <ul class="text text-danger">{{ form.name.errors }}</ul>
+        {% endif %}
+        {% for field in form %}
+            <p>
+            <label class="font-weight-bold" form="{{ field.name }}">{{ field.label }}</label>
+            {{ field }}
+            </p>
+        {% endfor %}
         <button class="btn btn-outline-primary" type="submit">Add</button>
     </form>
 {% endblock %}
