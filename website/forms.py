@@ -47,36 +47,12 @@ class GetStartAndEndDatesForm(forms.ModelForm):
         model = AvailableTime
         fields = ('start_date', 'start_time', 'end_date', 'end_time')
 
-def _getUserList():
-    """
-    formats a tuple from users
-    :return: a list of tuples used for select/multiple choice
-    """
-    lst = []
-    i = 0
-    if User.objects.count() != 0:
-        for usr in User.objects.all():
-            lst.append((str(i), str(usr)))
-            i += 1
-    return tuple(lst)
 
-
-class AddGroupForm(forms.Form):
+class AddGroupForm(forms.ModelForm):
     """
     Form for adding new groups
     """
-    userList = []
-
-    def __init__(self, *args, **kwargs):
-        self.userList = _getUserList()
-        self.fields = (
-            forms.MultipleChoiceField(widget=forms.SelectMultiple, choices=self.userList),
-            forms.CharField(max_length=128)
-        )
-        super(AddGroupForm, self).__init__(self.fields, *args, **kwargs)
-
-    add_members = forms.MultipleChoiceField(widget=forms.SelectMultiple, choices= userList)
-    name = forms.CharField(max_length=128)
-
-
+    class Meta:
+        model = ScheduleHubGroup
+        fields = ['name', 'users']
 

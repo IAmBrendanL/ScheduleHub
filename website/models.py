@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
+from django.core.validators import RegexValidator
 
-# Create your models here.
 
+# Validators
+# Regex validator for groups
+group_name_regex_val = RegexValidator(r'^[0-9a-zA-Z _-]*$', "A group name can only contain alphanumeric characters, "
+                                                            "spaces, hyphens, and underscores")
+
+# Models
 class AvailableTime(models.Model):
     """
     A model that represents available times for a user or group
@@ -12,8 +17,8 @@ class AvailableTime(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
 
-    # relationships defined in the user and group models
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    # has a many to one relation to a django user
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     # meta
     class Meta:
@@ -29,11 +34,11 @@ class ScheduleHubGroup(models.Model):
     A model that represents a group of users
     """
     # properties (fields)
-    name = models.CharField(max_length=128, help_text="Enter a name")
+    name = models.CharField(max_length=128, validators=[group_name_regex_val])
 
     # relationships
     times = models.ForeignKey(AvailableTime, on_delete=models.SET_NULL, null=True)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, help_text="Hold down ctrl (or cmd on a Mac) to select multiple")
 
     # meta
     class Meta:
@@ -46,4 +51,5 @@ class ScheduleHubGroup(models.Model):
 
     def __str__(self):
         return self.name
+
 
