@@ -58,7 +58,18 @@ def addGroupView(request):
     if request.method == 'POST':
         form = AddGroupForm(request.POST)
         if form.is_valid():
-            return redirect('/website/groups/')
+            data = form.cleaned_data
+            # Check if group with a name already exists
+            if ScheduleHubGroup.objects.filter(name=data['name']).exists():
+                # return form with error.
+                messages.error(request, "That name is already in use.")
+                return render(request, 'add_group.html', {'form': form})
+            # Else create group
+            else:
+                group = ScheduleHubGroup.objects.create(name=data['name'])
+                for user in data['users']:
+                    group.users.add(user)
+                return redirect('/website/groups/')
         else:
             return render(request, 'add_group.html', {'form': form})
     else:
