@@ -1,9 +1,11 @@
 # ScheduleHub-Web
+## *Pre-Alpha*
+
 A website built using Python 3.6 with the Django 1.11 framework to facilitate scheduling meeting times for groups of people.
 
 This website will interface with the ScheduleHub-Mobile project.
 
-Pre-Alpha
+
 
 To Run:
   * Install Python 3.6
